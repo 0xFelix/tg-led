@@ -235,6 +235,10 @@ func (c *tgLed) login() error {
 		return err
 	}
 
+	if passwordResponse.PStatus != "AdminMatch" {
+		return errors.New("login failed (wrong password?)")
+	}
+
 	data, err := hex.DecodeString(passwordResponse.EncryptData)
 	if err != nil {
 		return err
