@@ -124,11 +124,11 @@ func (c *tgLed) sendRequest(method, url string, body any, csrfNonce bool) ([]byt
 		return nil, err
 	}
 
-	req.Header.Set("Origin", "http://"+c.address)
 	if method == http.MethodPost && body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
 	if csrfNonce {
+		req.Header.Set("Origin", "http://"+c.address)
 		req.Header.Set("csrfNonce", c.csrfNonce)
 	}
 
