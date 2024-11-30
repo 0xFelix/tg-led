@@ -1,4 +1,5 @@
 # golangci configuration
+# Taken from https://github.com/kubevirt/kubevirt/blob/main/.golangci.yml
 
 linters-settings:
   dupl:
@@ -6,12 +7,9 @@ linters-settings:
   funlen:
     lines: 100
     statements: 50
-  gci:
-    sections:
-      - prefix(github.com/0xFelix/tg-led)
   goconst:
     min-len: 2
-    min-occurrences: 2
+    min-occurrences: 3
   gocritic:
     enabled-tags:
       - diagnostic
@@ -34,13 +32,14 @@ linters-settings:
   gocyclo:
     min-complexity: 15
   goimports:
-    local-prefixes: kubevirt.io/containerdisks
+    local-prefixes: github.com/0xfelix/tg-led
   mnd:
     # don't include the "operation" and "assign"
     checks: argument,case,condition,return
     ignored-functions:
       - '^Eventually$'
       - '^EventuallyWithOffset$'
+      - '^ExpectWithOffset$'
       - '^console\.ExpectBatch$'
       - '^console\.RunCommand$'
   govet:
