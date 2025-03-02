@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/pbkdf2"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -20,7 +21,6 @@ import (
 	"strings"
 
 	"github.com/pion/dtls/v3/pkg/crypto/ccm"
-	"golang.org/x/crypto/pbkdf2"
 )
 
 type LoginData struct {
@@ -193,7 +193,11 @@ func (c *tgLed) config() error {
 
 	const iterations = 1000
 	const keyLen = 16
-	block, err := aes.NewCipher(pbkdf2.Key([]byte(c.password), salt, iterations, keyLen, sha256.New))
+	key, err := pbkdf2.Key(sha256.New, c.password, salt, iterations, keyLen)
+	if err != nil {
+		return err
+	}
+	block, err := aes.NewCipher(key)
 	if err != nil {
 		return err
 	}
